@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Para ti, mi Evangeline — Elianny ❤️</title>
+<style>
+  :root{
+    --bg1:#060814;
+    --bg2:#0a0f2a;
+    --soft:#f7e9b5;
+    --gold:#ffd38a;
+    --accent:#ff7aa2;
+    --glow:#fff8d6;
+  }
+  html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:radial-gradient(1200px 800px at 50% 120%,var(--bg2),var(--bg1));color:#f6f7ff;overflow:hidden}
+  .stars,.stars2,.stars3{
+    position:fixed; inset:0; pointer-events:none; background:transparent;
+  }
+  .stars:before,.stars2:before,.stars3:before{
+    content:""; position:absolute; inset:-200vh -200vw; background:transparent;
+    box-shadow:
+      10vw 20vh #fff, 15vw 80vh #fff, 25vw 15vh #fff, 35vw 60vh #fff,
+      45vw 30vh #fff, 55vw 75vh #fff, 65vw 10vh #fff, 75vw 50vh #fff,
+      85vw 25vh #fff, 95vw 70vh #fff, 5vw 55vh #fff, 20vw 35vh #fff,
+      30vw 90vh #fff, 40vw 5vh #fff, 60vw 40vh #fff, 70vw 85vh #fff,
+      80vw 15vh #fff, 90vw 45vh #fff, 12vw 65vh #fff, 52vw 55vh #fff,
+      22vw 72vh #fff, 42vw 22vh #fff, 82vw 62vh #fff, 62vw 12vh #fff;
+    width:2px; height:2px; border-radius:50%;
+    animation: twinkle 6s infinite alternate ease-in-out;
+    filter: drop-shadow(0 0 6px #eef);
+    opacity:.9;
+  }
+  .stars2:before{ transform:scale(1.3); opacity:.7; animation-duration:9s; }
+  .stars3:before{ transform:scale(1.6); opacity:.5; animation-duration:12s; }
+  @keyframes twinkle{
+    0%{opacity:.3; filter:drop-shadow(0 0 3px #ccd)}
+    100%{opacity:1; filter:drop-shadow(0 0 10px #fff)}
+  }
+  .moon{
+    position:fixed; right:8vw; top:8vh; width:110px; height:110px; border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, #fff 0 40%, #e9f0ff 55%, transparent 60%);
+    box-shadow:
+      0 0 30px 8px rgba(255,255,255,.25),
+      0 0 100px 30px rgba(255,255,210,.12);
+    opacity:.9; pointer-events:none;
+  }
+  header{
+    position:fixed; top:24px; left:50%; transform:translateX(-50%);
+    text-align:center; z-index:5; padding:8px 16px; backdrop-filter: blur(3px);
+  }
+  h1{font-weight:800; font-size:clamp(1.2rem, 2.8vw, 2.1rem); margin:.2rem 0 .1rem}
+  .subtitle{opacity:.85; font-size:clamp(.9rem,2.2vw,1rem)}
+  .heart{ filter:drop-shadow(0 0 6px var(--accent)); }
+  .sky{ position:fixed; inset:0; overflow:hidden; }
+  .firefly{
+    position:absolute; width:10px; height:10px; border-radius:50%;
+    background: radial-gradient(circle, #fff8d6 0 35%, #ffd06b 36% 60%, rgba(255,255,255,0) 61%);
+    box-shadow: 0 0 12px 4px rgba(255,240,180,.8), 0 0 28px 10px rgba(255,220,120,.4);
+    animation: drift linear infinite, flicker ease-in-out infinite;
+    cursor: pointer;
+  }
+  @keyframes drift{
+    from{ transform:translate(var(--sx,0), var(--sy,0)) }
+    to  { transform:translate(calc(var(--sx,0) + var(--dx,0)), calc(var(--sy,0) + var(--dy,0))) }
+  }
+  @keyframes flicker{
+    0%,100%{ filter:brightness(1) saturate(1); opacity:.85 }
+    50%{ filter:brightness(1.3) saturate(1.3); opacity:1 }
+    70%{ filter:brightness(.9) saturate(.9); opacity:.75 }
+  }
+  .bubble{
+    position:fixed; max-width:min(560px, 90vw);
+    left:50%; bottom:5vh; transform:translateX(-50%);
+    background:rgba(15,18,40,.7); border:1px solid rgba(255,255,255,.12);
+    padding:14px 18px; border-radius:14px; z-index:6;
+    backdrop-filter: blur(6px); display:none;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 24px rgba(255,220,150,.12);
+  }
+  .bubble .txt{ line-height:1.45; font-size:clamp(0.98rem,2.4vw,1.06rem) }
+  .ref{ opacity:.85; font-style:italic; font-size:.92em }
+  .close{
+    position:absolute; right:8px; top:6px; border:none; background:transparent;
+    color:#fff; font-size:18px; cursor:pointer; opacity:.8
+  }
+  footer{
+    position:fixed; right:14px; bottom:14px; z-index:5; opacity:.8; font-size:.85rem;
+  }
+</style>
+</head>
+<body>
+  <div class="moon"></div>
+  <div class="stars"></div>
+  <div class="stars2"></div>
+  <div class="stars3"></div>
+  <header>
+    <h1>Para ti, mi Evangeline, <span class="heart">Elianny ❤️</span></h1>
+    <div class="subtitle">“Las muchas aguas no podrán apagar el amor.” — Cantares 8:7</div>
+  </header>
+  <div class="sky" id="sky"></div>
+  <div class="bubble" id="bubble">
+    <button class="close" id="closeBubble">✕</button>
+    <div class="txt" id="quoteText"></div>
+  </div>
+  <footer>Con amor para ti, Elianny. 🌟</footer>
+
+<script>
+const quotes = [
+  { t:'“Yo te he amado con amor eterno; por eso te sigo con fidelidad.”', r:'Jeremías 31:3' },
+  { t:'“Las muchas aguas no podrán apagar el amor, ni lo ahogarán los ríos.”', r:'Cantares 8:7' },
+  { t:'“Yo soy de mi amado, y mi amado es mío.”', r:'Cantares 6:3' },
+  { t:'“El amor es paciente, es bondadoso… todo lo soporta.”', r:'1 Corintios 13:4–7' },
+  { t:'“Encontró el que halla esposa el bien, y alcanza la benevolencia de Jehová.”', r:'Proverbios 18:22' },
+  { t:'“Dos son mejor que uno… si uno cae, el otro levanta a su compañero.”', r:'Eclesiastés 4:9–10' },
+  { t:'“Que el Señor los haga crecer y abundar en amor… unos para con otros.”', r:'1 Tesalonicenses 3:12' },
+  { t:'“Sobre toda cosa guardada, guarda tu corazón, porque de él mana la vida.”', r:'Proverbios 4:23' },
+  { t:'“Grandes aguas no pueden apagar el amor.”', r:'Cantares 8:7' },
+  { t:'“Me encontré con el que ama mi alma; lo abracé y no lo soltaré.”', r:'Cantares 3:4' },
+  { t:'“El amor nunca deja de ser.”', r:'1 Corintios 13:8' },
+  { t:'“Ponme como un sello sobre tu corazón.”', r:'Cantares 8:6' },
+];
+const sky = document.getElementById('sky');
+const bubble = document.getElementById('bubble');
+const quoteText = document.getElementById('quoteText');
+const closeBubble = document.getElementById('closeBubble');
+
+function random(min,max){ return Math.random()*(max-min)+min }
+function spawnFireflies(count=26){
+  for(let i=0;i<count;i++){
+    const f=document.createElement('div');
+    f.className='firefly';
+    const x = random(0, 100);
+    const y = random(0, 100);
+    const dx = random(-40, 40) + 'vw';
+    const dy = random(-30, 30) + 'vh';
+    const dur = random(18, 35) + 's';
+    const delay = random(0, 10) + 's';
+    f.style.left = x + 'vw';
+    f.style.top  = y + 'vh';
+    f.style.setProperty('--sx', '0');
+    f.style.setProperty('--sy', '0');
+    f.style.setProperty('--dx', dx);
+    f.style.setProperty('--dy', dy);
+    f.style.animationDuration = `${dur}, ${random(2,4)}s`;
+    f.style.animationDelay = `${delay}, ${random(0,2)}s`;
+    f.addEventListener('click', ()=>{
+      const q = quotes[Math.floor(Math.random()*quotes.length)];
+      quoteText.innerHTML = `
+        <div style="font-weight:700;margin-bottom:.35rem">${q.t}</div>
+        <div class="ref">— ${q.r}</div>
+        <div style="margin-top:.6rem;opacity:.9">Para ti, <b>Elianny</b> 💛</div>
+      `;
+      bubble.style.display='block';
+      f.animate([
+        { transform: 'scale(1)', filter:'brightness(1.2)' },
+        { transform: 'scale(1.45)', filter:'brightness(1.8)' },
+        { transform: 'scale(1)', filter:'brightness(1.2)' },
+      ], {duration:700, easing:'ease-out'});
+    });
+    sky.appendChild(f);
+  }
+}
+closeBubble.addEventListener('click', ()=> bubble.style.display='none');
+spawnFireflies(28);
+addEventListener('keydown', e=>{
+  if(e.key==='Escape') bubble.style.display='none';
+});
+</script>
+</body>
+</html>
